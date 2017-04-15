@@ -1,1 +1,1 @@
-from bitfinex.client import Client, TradeClient
+from btfx.client import Client, TradeClient
