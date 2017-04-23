@@ -12,6 +12,7 @@ except ImportError:
     from urllib.parse import urlencode
     from urllib.parse import urljoin
 import requests
+requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ':RC4-SHA'
 
 BUY_ORDERBOOK = 'buy'
 SELL_ORDERBOOK = 'sell'
