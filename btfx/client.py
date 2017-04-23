@@ -40,7 +40,7 @@ class TradeClient:
         Returns a nonce
         Used in authentication
         """
-        return str(time.time() * 1000000)
+        return str(time.time())
 
     def _sign_payload(self, payload):
         j = json.dumps(payload)
@@ -308,8 +308,9 @@ class TradeClient:
             "request": "/v1/balances",
             "nonce": self._nonce
         }
-
+        print(payload)
         signed_payload = self._sign_payload(payload)
+        print(signed_payload)
         r = requests.post(self.URL + "/balances", headers=signed_payload, verify=True)
         json_resp = r.json()
 

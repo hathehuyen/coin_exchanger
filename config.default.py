@@ -12,6 +12,12 @@ class POLO:
         "USDT": 0.5
     }
 
+class BTFX:
+    def __init__(self):
+        pass
+    Key = ""
+    Secret = ""
+
 
 class BTRX:
     def __init__(self):
