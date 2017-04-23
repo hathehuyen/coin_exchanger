@@ -20,7 +20,7 @@ def get_balance():
     print(br.get_balances())
     # print(br.get_deposit_address('BTC'))
     # print(br.get_deposit_address('USDT'))
-    print(bft.balances())
+    print(bft.account_infos())
 
 
 def get_ticker():

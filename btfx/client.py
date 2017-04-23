@@ -308,10 +308,24 @@ class TradeClient:
             "request": "/v1/balances",
             "nonce": self._nonce
         }
-        print(payload)
         signed_payload = self._sign_payload(payload)
-        print(signed_payload)
         r = requests.post(self.URL + "/balances", headers=signed_payload, verify=True)
+        json_resp = r.json()
+
+        return json_resp
+
+    def account_infos(self):
+        """
+        Fetch account infos
+
+        :return:
+        """
+        payload = {
+            "request": "/v1/account_infos",
+            "nonce": self._nonce
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + "/account_infos", headers=signed_payload, verify=True)
         json_resp = r.json()
 
         return json_resp
