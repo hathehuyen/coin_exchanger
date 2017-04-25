@@ -20,8 +20,8 @@ def get_balance():
     # print(br.get_balances())
     # print(br.get_deposit_address('BTC'))
     # print(br.get_deposit_address('USDT'))
-    # print(bft.balances())
-    print(json.dumps(bf.order_book('BTCUSD')))
+    print(bft.balances())
+    # print(json.dumps(bf.order_book('BTCUSD')))
 
 def calculate_price_and_amount(symbol='BTCUSD'):
     result = bf.order_book(symbol)
@@ -79,7 +79,7 @@ def transfer():
 
 
 if __name__ == "__main__":
-    # get_balance()
+    get_balance()
     calculate_price_and_amount()
     # bf_b, bf_s, br_b, br_s = get_ticker()
     # buy_sell(br_b, bf_s, br_b, br_s)
