@@ -17,10 +17,30 @@ br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
 
 
 def get_balance():
-    print(br.get_balances())
+    # print(br.get_balances())
     # print(br.get_deposit_address('BTC'))
     # print(br.get_deposit_address('USDT'))
-    print(bft.account_infos())
+    # print(bft.balances())
+    print(json.dumps(bf.order_book('BTCUSD')))
+
+def calculate_price_and_amount(symbol='BTCUSD'):
+    result = bf.order_book(symbol)
+    bids = result['bids']
+    bid_want_price = 1370
+    bid_amount = 0
+    asks = result['asks']
+    ask_want_price = 1380
+    ask_amount = 0
+    for bid in bids:
+        if bid['price'] >= bid_want_price:
+            bid_amount += bid['amount']
+        #print(bid)
+    print(bid_amount)
+    for ask in asks:
+        if ask['price'] <= ask_want_price:
+            ask_amount += ask['price']
+    print(ask_amount)
+        #print(ask)
 
 
 def get_ticker():
@@ -59,8 +79,9 @@ def transfer():
 
 
 if __name__ == "__main__":
-    get_balance()
-    #bf_b, bf_s, br_b, br_s = get_ticker()
-    #buy_sell(br_b, bf_s, br_b, br_s)
-    #transfer()
+    # get_balance()
+    calculate_price_and_amount()
+    # bf_b, bf_s, br_b, br_s = get_ticker()
+    # buy_sell(br_b, bf_s, br_b, br_s)
+    # transfer()
     time.sleep(1)

@@ -11,6 +11,4 @@ class Balance(Document):
     exchanger = StringField()
     usdt = FloatField()
     btc = FloatField()
-    eth = FloatField()
-    etc = FloatField()
 
