@@ -16,11 +16,26 @@ bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
 br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
 
 
-def get_balance():
+def run():
     # print(br.get_balances())
     # print(br.get_deposit_address('BTC'))
     # print(br.get_deposit_address('USDT'))
-    print(bft.balances())
+    btc_available = 0
+    usd_available = 0
+    balances = bft.get_balances()
+    for balance in balances:
+        if balance['type'] == 'exchange' and balance['currency'] == 'btc':
+            btc_available = balance['available']
+        if balance['type'] == 'exchange' and balance['currency'] == 'usd':
+            usd_available = balance['available']
+    print('BTC: ', btc_available)
+    print('USD: ', usd_available)
+
+    
+    # print(bft.account_infos())
+    # print(bft.get_summary())
+    # print(bft.get_deposit_address('bitcoin'))
+    # print(bft.get_deposit_address('mastercoin'))
     # print(json.dumps(bf.order_book('BTCUSD')))
 
 def calculate_price_and_amount(symbol='BTCUSD'):
@@ -79,8 +94,8 @@ def transfer():
 
 
 if __name__ == "__main__":
-    get_balance()
-    calculate_price_and_amount()
+    run()
+    #calculate_price_and_amount()
     # bf_b, bf_s, br_b, br_s = get_ticker()
     # buy_sell(br_b, bf_s, br_b, br_s)
     # transfer()

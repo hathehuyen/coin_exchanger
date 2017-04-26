@@ -59,8 +59,10 @@ class TradeClient:
         Submit a new order.
         :param amount:
         :param price:
-        :param side:
-        :param ord_type:
+        :param side: Either “buy” or “sell”.
+        :param ord_type: Either “market” / “limit” / “stop” / “trailing-stop” / “fill-or-kill” 
+        / “exchange market” / “exchange limit” / “exchange stop” / “exchange trailing-stop” 
+        / “exchange fill-or-kill”. (type starting by “exchange ” are exchange orders, others are margin trading orders)
         :param symbol:
         :param exchange:
         :return:
@@ -298,7 +300,7 @@ class TradeClient:
 
         return json_resp
 
-    def balances(self):
+    def get_balances(self):
         """
         Fetch balances
 
@@ -330,7 +332,43 @@ class TradeClient:
 
         return json_resp
 
-    def history(self, currency, since=0, until=9999999999, limit=500, wallet='exchange'):
+    def get_deposit_address(self, method):
+        """
+        Get deposit address
+        Method of deposit:
+        “bitcoin”, “litecoin”, “ethereum”, “mastercoin” (tethers), "ethereumc", "zcash", "monero").
+        :return:
+        """
+        payload = {
+            "request": "/v1/deposit/new",
+            "nonce": self._nonce,
+            "method": method,
+            "wallet_name": "exchange",
+            "renew": 0
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + "/deposit/new", headers=signed_payload, verify=True)
+        json_resp = r.json()
+
+        return json_resp
+
+
+    def get_summary(self):
+        """
+        Returns a 30-day summary of your trading volume and return on margin funding.
+        :return:
+        """
+        payload = {
+            "request": "/v1/summary",
+            "nonce": self._nonce
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + "/summary", headers=signed_payload, verify=True)
+        json_resp = r.json()
+
+        return json_resp
+
+    def get_history(self, currency, since=0, until=9999999999, limit=500, wallet='exchange'):
         """
         View you balance ledger entries
         :param currency: currency to look for
@@ -351,6 +389,31 @@ class TradeClient:
         }
         signed_payload = self._sign_payload(payload)
         r = requests.post(self.URL + "/history", headers=signed_payload, verify=True)
+        json_resp = r.json()
+
+        return json_resp
+
+    def get_deposit_withdraw_history(self, currency, since=0, until=9999999999, limit=500, wallet='exchange'):
+        """
+        View you balance ledger entries
+        :param currency: currency to look for
+        :param since: Optional. Return only the history after this timestamp.
+        :param until: Optional. Return only the history before this timestamp.
+        :param limit: Optional. Limit the number of entries to return. Default is 500.
+        :param wallet: Optional. Return only entries that took place in this wallet. Accepted inputs are: “trading”,
+        “exchange”, “deposit”.
+        """
+        payload = {
+            "request": "/v1/history/movements",
+            "nonce": self._nonce,
+            "currency": currency,
+            "since": since,
+            "until": until,
+            "limit": limit,
+            "wallet": wallet
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + "/history/movements", headers=signed_payload, verify=True)
         json_resp = r.json()
 
         return json_resp

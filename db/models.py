@@ -9,6 +9,6 @@ connect(
 
 class Balance(Document):
     exchanger = StringField()
-    usdt = FloatField()
+    usd = FloatField()
     btc = FloatField()
 
