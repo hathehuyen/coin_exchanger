@@ -16,6 +16,34 @@ bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
 br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
 
 
+def bitfinex_get_infos():
+    def get_balance()
+    order_book = bf.order_book('BTCUSD')
+    def price_to_buy(order_book, amount):
+        asks = order_book['asks']
+        # print(asks)
+        for ask in asks:
+            if amount <= ask['amount']:
+                return ask['price']
+            else:
+                amount -= float(ask['amount'])
+        return False
+
+
+    def price_to_sell(order_book, amount):
+        bids = order_book['bids']
+        # print(bids)
+        for bid in bids:
+            if amount <= bid['amount']:
+                return bid['price']
+            else:
+                amount -= float(bid['amount'])
+        return False
+
+    print(price_to_buy(order_book, 6))
+    print(price_to_sell(order_book, 6))
+
+
 def run():
     # print(br.get_balances())
     # print(br.get_deposit_address('BTC'))
@@ -31,7 +59,7 @@ def run():
     print('BTC: ', btc_available)
     print('USD: ', usd_available)
 
-    
+
     # print(bft.account_infos())
     # print(bft.get_summary())
     # print(bft.get_deposit_address('bitcoin'))
@@ -94,7 +122,8 @@ def transfer():
 
 
 if __name__ == "__main__":
-    run()
+    bitfinex_get_infos()
+    # run()
     #calculate_price_and_amount()
     # bf_b, bf_s, br_b, br_s = get_ticker()
     # buy_sell(br_b, bf_s, br_b, br_s)
