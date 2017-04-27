@@ -5,7 +5,6 @@ import btfx
 import btrx
 import json
 import time
-import db
 
 
 # p = polo.poloniex(config.POLO.APIKey, config.POLO.Secret)
@@ -17,8 +16,19 @@ br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
 
 
 def bitfinex_get_infos():
-    def get_balance()
-    order_book = bf.order_book('BTCUSD')
+    def get_balance():
+        btc_available = 0
+        usd_available = 0
+        balances = bft.get_balances()
+        for balance in balances:
+            if balance['type'] == 'exchange' and balance['currency'] == 'btc':
+                btc_available = balance['available']
+            if balance['type'] == 'exchange' and balance['currency'] == 'usd':
+                usd_available = balance['available']
+        # print('BTC: ', btc_available)
+        # print('USD: ', usd_available)
+        return float(usd_available), float(btc_available)
+
     def price_to_buy(order_book, amount):
         asks = order_book['asks']
         # print(asks)
@@ -28,7 +38,6 @@ def bitfinex_get_infos():
             else:
                 amount -= float(ask['amount'])
         return False
-
 
     def price_to_sell(order_book, amount):
         bids = order_book['bids']
@@ -40,50 +49,24 @@ def bitfinex_get_infos():
                 amount -= float(bid['amount'])
         return False
 
-    print(price_to_buy(order_book, 6))
-    print(price_to_sell(order_book, 6))
+    order_book = bf.order_book('BTCUSD')
+    usd_available, btc_available = get_balance()
+    # print(price_to_buy(order_book, 6))
+    # print(price_to_sell(order_book, 6))
+    return usd_available, btc_available,\
+           price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
 
 
 def run():
     # print(br.get_balances())
     # print(br.get_deposit_address('BTC'))
     # print(br.get_deposit_address('USDT'))
-    btc_available = 0
-    usd_available = 0
-    balances = bft.get_balances()
-    for balance in balances:
-        if balance['type'] == 'exchange' and balance['currency'] == 'btc':
-            btc_available = balance['available']
-        if balance['type'] == 'exchange' and balance['currency'] == 'usd':
-            usd_available = balance['available']
-    print('BTC: ', btc_available)
-    print('USD: ', usd_available)
-
-
+    pass
     # print(bft.account_infos())
     # print(bft.get_summary())
     # print(bft.get_deposit_address('bitcoin'))
     # print(bft.get_deposit_address('mastercoin'))
     # print(json.dumps(bf.order_book('BTCUSD')))
-
-def calculate_price_and_amount(symbol='BTCUSD'):
-    result = bf.order_book(symbol)
-    bids = result['bids']
-    bid_want_price = 1370
-    bid_amount = 0
-    asks = result['asks']
-    ask_want_price = 1380
-    ask_amount = 0
-    for bid in bids:
-        if bid['price'] >= bid_want_price:
-            bid_amount += bid['amount']
-        #print(bid)
-    print(bid_amount)
-    for ask in asks:
-        if ask['price'] <= ask_want_price:
-            ask_amount += ask['price']
-    print(ask_amount)
-        #print(ask)
 
 
 def get_ticker():
@@ -122,7 +105,10 @@ def transfer():
 
 
 if __name__ == "__main__":
-    bitfinex_get_infos()
+    usd_available, btc_available, price_to_buy, price_to_sell = bitfinex_get_infos()
+    print(usd_available, btc_available, price_to_buy, price_to_sell)
+    print('Buy all BTC: ', usd_available / price_to_buy + btc_available)
+    print('Sell all BTC: ', btc_available * price_to_sell + usd_available)
     # run()
     #calculate_price_and_amount()
     # bf_b, bf_s, br_b, br_s = get_ticker()
