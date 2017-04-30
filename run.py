@@ -161,8 +161,8 @@ if __name__ == "__main__":
             try:
                 # Bitfinex
                 bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell = bitfinex_get_infos()
-                print(bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
-                print(bf.ticker('btcusd'))
+                print('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
+                # print(bf.ticker('btcusd'))
                 # print('Buy all BTC: ',
                 #       (usd_available / price_to_buy) - (usd_available / price_to_buy) * config.BTFX.taker_fee  + btc_available)
                 # print('Sell all BTC: ',
@@ -174,8 +174,8 @@ if __name__ == "__main__":
 
                 # Bitfinex
                 br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell = bittrex_get_infos()
-                print(br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
-                print(br.get_ticker('USDT-BTC'))
+                print('Bittrex: ', br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
+                # print(br.get_ticker('USDT-BTC'))
 
                 # Compare to make decision
                 fee = 0
