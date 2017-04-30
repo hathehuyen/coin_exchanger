@@ -157,6 +157,7 @@ def transfer():
 if __name__ == "__main__":
     try:
         #print(json.dumps(bft.get_summary()))
+        # print(json.dumps(bft.active_offers()))
         while True:
             try:
                 # Bitfinex
@@ -178,7 +179,7 @@ if __name__ == "__main__":
                 # print(br.get_ticker('USDT-BTC'))
 
                 # Compare to make decision
-                fee = 0
+                fee = 2
                 price_delta_br_bf = bf_price_to_sell - br_price_to_buy
                 price_delta_bf_br = br_price_to_sell - bf_price_to_buy
                 if price_delta_br_bf > fee:
@@ -197,6 +198,6 @@ if __name__ == "__main__":
                 # transfer()
             except Exception as ex:
                 print(ex.message)
-            time.sleep(15)
+            time.sleep(30)
     except Exception as ex:
         raise ex
