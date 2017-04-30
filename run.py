@@ -49,11 +49,61 @@ def bitfinex_get_infos():
                 amount -= float(bid['amount'])
         return False
 
+    def get_fee():
+        print(bft.account_infos())
+
     order_book = bf.order_book('BTCUSD')
     usd_available, btc_available = get_balance()
     # print(price_to_buy(order_book, 6))
     # print(price_to_sell(order_book, 6))
     return usd_available, btc_available,\
+           price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
+
+
+def bittrex_get_infos():
+    def get_balance():
+        btc_available = 0
+        usd_available = 0
+        balances = br.get_balances()
+        # print(balances)
+        if 'success' in balances:
+            if balances['success']:
+                for balance in balances['result']:
+                    if balance['Currency'] == 'BTC':
+                        btc_available = balance['Available']
+                    if balance['Currency'] == 'USDT':
+                        usd_available = balance['Available']
+                # print('BTC: ', btc_available)
+                # print('USD: ', usd_available)
+                return float(usd_available), float(btc_available)
+
+    def price_to_buy(order_book, amount):
+        if 'success' in order_book:
+            if order_book['success']:
+                asks = order_book['result']['sell']
+                # print(asks)
+                for ask in asks:
+                    if amount <= ask['Quantity']:
+                        return ask['Rate']
+                    else:
+                        amount -= float(ask['Quantity'])
+        return False
+
+    def price_to_sell(order_book, amount):
+        if 'success' in order_book:
+            if order_book['success']:
+                bids = order_book['result']['buy']
+                # print(asks)
+                for bid in bids:
+                    if amount <= bid['Quantity']:
+                        return bid['Rate']
+                    else:
+                        amount -= float(bid['Quantity'])
+        return False
+
+    usd_available, btc_available = get_balance()
+    order_book = br.get_orderbook('USDT-BTC', 'both')
+    return usd_available, btc_available, \
            price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
 
 
@@ -105,10 +155,27 @@ def transfer():
 
 
 if __name__ == "__main__":
+    # Test bitfinex
     usd_available, btc_available, price_to_buy, price_to_sell = bitfinex_get_infos()
     print(usd_available, btc_available, price_to_buy, price_to_sell)
-    print('Buy all BTC: ', usd_available / price_to_buy + btc_available)
-    print('Sell all BTC: ', btc_available * price_to_sell + usd_available)
+    print(bf.ticker('btcusd'))
+    # print('Buy all BTC: ',
+    #       (usd_available / price_to_buy) - (usd_available / price_to_buy) * config.BTFX.taker_fee  + btc_available)
+    # print('Sell all BTC: ',
+    #       btc_available * price_to_sell - (btc_available * price_to_sell) * config.BTFX.taker_fee+ usd_available)
+    # print(bft.place_order(str((usd_available / price_to_buy) - (usd_available / price_to_buy) * config.BTFX.taker_fee),
+    #       str(price_to_buy), "buy", "exchange fill-or-kill"))
+    # print(json.dumps({u'oco_order': None, u'was_forced': False, u'src': u'api', u'avg_execution_price': u'0.0', u'exchange': u'bitfinex', u'order_id': 2402375671, u'timestamp': u'1493396216.368241535', u'symbol': u'btcusd', u'cid': 58616340437, u'cid_date': u'2017-04-28', u'price': u'1398.1', u'is_live': True, u'gid': None, u'executed_amount': u'0.0', u'is_cancelled': False, u'remaining_amount': u'0.0214596921373', u'is_hidden': False, u'original_amount': u'0.0214596921373', u'type': u'exchange fok', u'id': 2402375671, u'side': u'buy'}))
+    # print(json.dumps(bft.status_order(2402375671)))
+
+    # Test bitfinex
+    usd_available, btc_available, price_to_buy, price_to_sell = bittrex_get_infos()
+    print(usd_available, btc_available, price_to_buy, price_to_sell)
+    print(br.get_ticker('USDT-BTC'))
+    # print('Buy all BTC: ',
+    #       (usd_available / price_to_buy) - (usd_available / price_to_buy) * config.BTFX.taker_fee  + btc_available)
+    # print('Sell all BTC: ',
+    #       btc_available * price_to_sell - (btc_available * price_to_sell) * config.BTFX.taker_fee+ usd_available)
     # run()
     #calculate_price_and_amount()
     # bf_b, bf_s, br_b, br_s = get_ticker()

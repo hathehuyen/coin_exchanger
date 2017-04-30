@@ -84,10 +84,10 @@ class TradeClient:
         r = requests.post(self.URL + "/order/new", headers=signed_payload, verify=True)
         json_resp = r.json()
 
-        try:
-            json_resp['order_id']
-        except:
-            return json_resp['message']
+        # try:
+        #     json_resp['order_id']
+        # except:
+        #     return json_resp['message']
 
         return json_resp
 
@@ -146,10 +146,10 @@ class TradeClient:
         r = requests.post(self.URL + "/order/status", headers=signed_payload, verify=True)
         json_resp = r.json()
 
-        try:
-            json_resp['avg_excution_price']
-        except:
-            return json_resp['message']
+        # try:
+        #     json_resp['avg_excution_price']
+        # except:
+        #     return json_resp['message']
 
         return json_resp
 
