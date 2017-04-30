@@ -33,10 +33,10 @@ def bitfinex_get_infos():
         asks = order_book['asks']
         # print(asks)
         for ask in asks:
-            if amount <= ask['amount']:
+            if amount <= ask['amount'] * ask['price']:
                 return ask['price']
             else:
-                amount -= float(ask['amount'])
+                amount -= float(ask['amount'] * ask['price'])
         return False
 
     def price_to_sell(order_book, amount):
@@ -83,10 +83,10 @@ def bittrex_get_infos():
                 asks = order_book['result']['sell']
                 # print(asks)
                 for ask in asks:
-                    if amount <= ask['Quantity']:
+                    if amount <= ask['Quantity'] * ask['Rate'] :
                         return ask['Rate']
                     else:
-                        amount -= float(ask['Quantity'])
+                        amount -= float(ask['Quantity'] * ask['Rate'])
         return False
 
     def price_to_sell(order_book, amount):
@@ -156,6 +156,7 @@ def transfer():
 
 if __name__ == "__main__":
     try:
+        print(json.dumps(bft.get_summary()))
         while True:
             try:
                 # Bitfinex
