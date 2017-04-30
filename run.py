@@ -156,7 +156,7 @@ def transfer():
 
 if __name__ == "__main__":
     try:
-        print(json.dumps(bft.get_summary()))
+        #print(json.dumps(bft.get_summary()))
         while True:
             try:
                 # Bitfinex
