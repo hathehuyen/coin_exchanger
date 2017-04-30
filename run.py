@@ -183,10 +183,10 @@ if __name__ == "__main__":
                 price_delta_br_bf = bf_price_to_sell - br_price_to_buy
                 price_delta_bf_br = br_price_to_sell - bf_price_to_buy
                 if price_delta_br_bf > fee:
-                    print ('br->bf: ',  price_delta_br_bf)
+                    print ('br->bf: ',  price_delta_br_bf, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
 
                 if price_delta_bf_br > fee:
-                    print ('bf->br: ', price_delta_bf_br)
+                    print ('bf->br: ', price_delta_bf_br, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
                 # print('Buy all BTC: ',
                 #       (usd_available / price_to_buy) - (usd_available / price_to_buy) * config.BTFX.taker_fee  + btc_available)
                 # print('Sell all BTC: ',
