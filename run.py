@@ -173,11 +173,11 @@ if __name__ == "__main__":
                 # print(json.dumps({u'oco_order': None, u'was_forced': False, u'src': u'api', u'avg_execution_price': u'0.0', u'exchange': u'bitfinex', u'order_id': 2402375671, u'timestamp': u'1493396216.368241535', u'symbol': u'btcusd', u'cid': 58616340437, u'cid_date': u'2017-04-28', u'price': u'1398.1', u'is_live': True, u'gid': None, u'executed_amount': u'0.0', u'is_cancelled': False, u'remaining_amount': u'0.0214596921373', u'is_hidden': False, u'original_amount': u'0.0214596921373', u'type': u'exchange fok', u'id': 2402375671, u'side': u'buy'}))
                 # print(json.dumps(bft.status_order(2402375671)))
 
-                # Bitfinex
+
+                # Bittrex
                 br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell = bittrex_get_infos()
                 print('Bittrex: ', br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
                 # print(br.get_ticker('USDT-BTC'))
-
                 # Compare to make decision
                 fee = 2
                 price_delta_br_bf = bf_price_to_sell - br_price_to_buy

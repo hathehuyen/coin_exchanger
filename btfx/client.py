@@ -393,6 +393,30 @@ class TradeClient:
 
         return json_resp
 
+    def withdraw(self, currency, amount, address, wallet='exchange'):
+        """
+        View you balance ledger entries
+        :param currency: currency to look for
+        :param since: Optional. Return only the history after this timestamp.
+        :param until: Optional. Return only the history before this timestamp.
+        :param limit: Optional. Limit the number of entries to return. Default is 500.
+        :param wallet: Optional. Return only entries that took place in this wallet. Accepted inputs are: “trading”,
+        “exchange”, “deposit”.
+        """
+        payload = {
+            "request": "/v1/withdraw",
+            "nonce": self._nonce,
+            "withdraw_type": currency,
+            "amount": amount,
+            "address": address,
+            "walletselected": wallet
+        }
+        signed_payload = self._sign_payload(payload)
+        r = requests.post(self.URL + "/withdraw", headers=signed_payload, verify=True)
+        json_resp = r.json()
+
+        return json_resp
+
     def get_deposit_withdraw_history(self, currency, since=0, until=9999999999, limit=500, wallet='exchange'):
         """
         View you balance ledger entries
