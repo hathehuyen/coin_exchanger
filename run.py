@@ -236,6 +236,11 @@ if __name__ == "__main__":
                 if price_delta_bf_br > fee:
                     print('bf->br: ', price_delta_bf_br, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
 
+                # # Test buy all bitfinex
+                # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
+                #     print("Buy complete")
+                # else:
+                #     print("Buy failed")
                 # # Test sell all bitfinex
                 # if bitfinex_sell(bf_btc_available, bf_price_to_sell):
                 #     print("Sell complete")
