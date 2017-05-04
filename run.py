@@ -123,6 +123,20 @@ def bitfinex_buy(usd_amount, price_to_buy):
         return False
 
 
+def bitfinex_sell(amount, price_to_sell):
+    try:
+        order = bft.place_order(str(amount), str(price_to_sell), "sell", "exchange fill-or-kill")
+        if 'order_id' in order:
+            order_id = order['order_id']
+            order_status = bft.status_order(order_id)
+            if order_status['executed_amount'] == order_status['original_amount']:
+                return True
+        return False
+    except Exception as ex:
+        print(ex)
+        return False
+
+
 
 def run():
     # print(br.get_balances())
