@@ -216,8 +216,8 @@ if __name__ == "__main__":
                 #     print("Sell complete")
                 # else:
                 #     print("Sell failed")
-                print(json.dumps(bft.withdraw('mastercoin', str(bf_usd_available), '16jyBXTmP2t21deSZJDT65vLJLsANqbYtL')))
-
+                # print(json.dumps(bft.withdraw('mastercoin', str(bf_usd_available), '16jyBXTmP2t21deSZJDT65vLJLsANqbYtL')))
+                # print(json.dumps(bft.get_deposit_withdraw_history('mastercoin')))
             except Exception as ex:
                 print(ex.message)
             time.sleep(30)
