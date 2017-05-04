@@ -6,7 +6,6 @@ import btrx
 import json
 import time
 
-
 # p = polo.poloniex(config.POLO.APIKey, config.POLO.Secret)
 # print(p.returnTicker())
 
@@ -142,7 +141,33 @@ def bitfinex_sell(amount, price_to_sell):
 def bittrex_buy(usd_amount, price_to_buy):
     market = 'USDT-BTC'
     try:
+        # Buy BTC
         order = br.buy_limit(market, usd_amount / price_to_buy, price_to_buy)
+        if order.get('success'):
+            order_result = order.get('result')
+            uuid = order_result.get('uuid')
+            # Check open order
+            if uuid:
+                open_orders = br.get_open_orders(market)
+                if open_orders.get('success'):
+                    open_orders_result = open_orders.get('result')
+                    if open_orders_result:
+                        for open_order in open_orders_result:
+                            if uuid == open_order.get('OrderUuid'):
+                                # Cancel
+                                br.cancel(uuid)
+                                return False
+        return True
+    except Exception as ex:
+        print(ex)
+        return False
+
+
+def bittrex_sell(btc_amount, price_to_sell):
+    market = 'USDT-BTC'
+    try:
+        # Sell BTC
+        order = br.sell_limit(market, btc_amount, price_to_sell)
         if order.get('success'):
             order_result = order.get('result')
             uuid = order_result.get('uuid')
@@ -191,7 +216,7 @@ def transfer():
 
 if __name__ == "__main__":
     try:
-        #print(json.dumps(bft.get_summary()))
+        # print(json.dumps(bft.get_summary()))
         # print(json.dumps(bft.active_offers()))
         while True:
             try:
@@ -209,7 +234,7 @@ if __name__ == "__main__":
                     print('br->bf: ', price_delta_br_bf, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
 
                 if price_delta_bf_br > fee:
-                    print ('bf->br: ', price_delta_bf_br, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
+                    print('bf->br: ', price_delta_bf_br, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
 
                 # # Test sell all bitfinex
                 # if bitfinex_sell(bf_btc_available, bf_price_to_sell):
