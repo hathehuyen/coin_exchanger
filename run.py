@@ -49,8 +49,6 @@ def bitfinex_get_infos():
                 amount -= float(bid['amount'])
         return False
 
-
-
     def get_fee():
         print(bft.account_infos())
 
@@ -58,7 +56,7 @@ def bitfinex_get_infos():
     usd_available, btc_available = get_balance()
     # print(price_to_buy(order_book, 6))
     # print(price_to_sell(order_book, 6))
-    return usd_available, btc_available,\
+    return usd_available, btc_available, \
            price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
 
 
@@ -85,7 +83,7 @@ def bittrex_get_infos():
                 asks = order_book['result']['sell']
                 # print(asks)
                 for ask in asks:
-                    if amount <= ask['Quantity'] * ask['Rate'] :
+                    if amount <= ask['Quantity'] * ask['Rate']:
                         return ask['Rate']
                     else:
                         amount -= float(ask['Quantity'] * ask['Rate'])
@@ -141,6 +139,29 @@ def bitfinex_sell(amount, price_to_sell):
         return False
 
 
+def bittrex_buy(usd_amount, price_to_buy):
+    market = 'USDT-BTC'
+    try:
+        order = br.buy_limit(market, usd_amount / price_to_buy, price_to_buy)
+        if order.get('success'):
+            order_result = order.get('result')
+            uuid = order_result.get('uuid')
+            # Check open order
+            if uuid:
+                open_orders = br.get_open_orders(market)
+                if open_orders.get('success'):
+                    open_orders_result = open_orders.get('result')
+                    if open_orders_result:
+                        for open_order in open_orders_result:
+                            if uuid == open_order.get('OrderUuid'):
+                                # Cancel
+                                br.cancel(uuid)
+                                return False
+        return True
+    except Exception as ex:
+        print(ex)
+        return False
+
 
 def run():
     # print(br.get_balances())
@@ -185,7 +206,7 @@ if __name__ == "__main__":
                 price_delta_br_bf = bf_price_to_sell - br_price_to_buy
                 price_delta_bf_br = br_price_to_sell - bf_price_to_buy
                 if price_delta_br_bf > fee:
-                    print ('br->bf: ',  price_delta_br_bf, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
+                    print('br->bf: ', price_delta_br_bf, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
 
                 if price_delta_bf_br > fee:
                     print ('bf->br: ', price_delta_bf_br, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
