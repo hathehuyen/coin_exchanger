@@ -49,6 +49,8 @@ def bitfinex_get_infos():
                 amount -= float(bid['amount'])
         return False
 
+
+
     def get_fee():
         print(bft.account_infos())
 
@@ -105,6 +107,21 @@ def bittrex_get_infos():
     order_book = br.get_orderbook('USDT-BTC', 'both')
     return usd_available, btc_available, \
            price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
+
+
+def bitfinex_buy(usd_amount, price_to_buy):
+    try:
+        order = bft.place_order(str(usd_amount / price_to_buy), str(price_to_buy), "buy", "exchange fill-or-kill")
+        if 'order_id' in order:
+            order_id = order['order_id']
+            order_status = bft.status_order(order_id)
+            if order_status['executed_amount'] == order_status['original_amount']:
+                return True
+        return False
+    except Exception as ex:
+        print(ex)
+        return False
+
 
 
 def run():
