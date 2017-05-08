@@ -13,6 +13,7 @@ class POLO:
     }
 
 
+
 class BTFX:
     def __init__(self):
         pass
@@ -20,6 +21,14 @@ class BTFX:
     Secret = ""
     maker_fee = 0.001
     taker_fee = 0.002
+    wallet_adress = {
+        "BTC": "",
+        "USDT": ""
+    }
+    withdraw_fee = {
+        "BTC": 0.0002,
+        "USDT": 0.1
+    }
 
 
 class BTRX:
@@ -27,6 +36,12 @@ class BTRX:
         pass
     Key = ""
     Secret = ""
-    Withdraw_fee = {
+    wallet_adress = {
+        "BTC": "",
+        "USDT": ""
+    }
+    taker_fee = 0.0025
+    withdraw_fee = {
         "BTC": 0.0002,
+        "USDT": 0.1
     }
