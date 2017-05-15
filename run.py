@@ -237,24 +237,27 @@ if __name__ == "__main__":
                 price_delta_bf_br = br_price_to_sell - bf_price_to_buy
                 print('Total usd available: ', bf_usd_available + br_usd_available)
                 print('Total btc available: ', br_btc_available + bf_btc_available)
-                print('Total value before exchange: ', br_usd_available + bf_usd_available +
-                      br_btc_available * br_price_to_sell + bf_btc_available * bf_price_to_sell)
+                total_before_exchange = br_usd_available + bf_usd_available + \
+                                        br_btc_available * br_price_to_sell + bf_btc_available * bf_price_to_sell
+                print('Total value before exchange: ', total_before_exchange)
                 if price_delta_br_bf > 0:
                     print('br->bf: ', price_delta_br_bf)
                     btc_after_buy = br_usd_available / br_price_to_buy + br_btc_available
                     print('btc after buy ', btc_after_buy)
                     usd_after_sell = bf_btc_available * bf_price_to_sell + br_usd_available
                     print('usd after sell ', usd_after_sell)
-                    print('Total value after exchange: ', usd_after_sell + btc_after_buy * br_price_to_sell / 2
-                          + btc_after_buy * bf_price_to_sell / 2)
+                    total_after_exchange =  usd_after_sell + btc_after_buy * br_price_to_sell / 2 \
+                                            + btc_after_buy * bf_price_to_sell / 2
+                    print('Total value after exchange: ', total_after_exchange)
                 if price_delta_bf_br > 0:
                     print('bf->br: ', price_delta_bf_br)
                     btc_after_buy = bf_usd_available / bf_price_to_buy + bf_btc_available
                     print('btc after buy ', btc_after_buy)
                     usd_after_sell = br_btc_available * br_price_to_sell + br_usd_available
                     print('usd after sell ', usd_after_sell)
-                    print('Total value after exchange: ', usd_after_sell + btc_after_buy * br_price_to_sell / 2
-                          + btc_after_buy * bf_price_to_sell / 2)
+                    total_after_exchange = usd_after_sell + btc_after_buy * br_price_to_sell / 2 \
+                                           + btc_after_buy * bf_price_to_sell / 2
+                    print('Total value after exchange: ', total_after_exchange)
 
                 # # Test buy all bitfinex
                 # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
