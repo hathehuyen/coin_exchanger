@@ -220,30 +220,41 @@ if __name__ == "__main__":
         # print(json.dumps(bft.active_offers()))
         while True:
             try:
+                print('=== running ===')
                 # Get Bitfinex info
                 bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell = bitfinex_get_infos()
                 print('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
                 # Get Bittrex info
                 br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell = bittrex_get_infos()
                 print('Bittrex: ', br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
+                #test data
+                br_usd_available = 1000
+                bf_usd_available = 1000
+                br_btc_available = 0.5
+                bf_btc_available = 0.5
                 # Compare to make decision
-                fee = 2
                 price_delta_br_bf = bf_price_to_sell - br_price_to_buy
                 price_delta_bf_br = br_price_to_sell - bf_price_to_buy
                 print('Total usd available: ', bf_usd_available + br_usd_available)
                 print('Total btc available: ', br_btc_available + bf_btc_available)
+                print('Total value before exchange: ', br_usd_available + bf_usd_available +
+                      br_btc_available * br_price_to_sell + bf_btc_available * bf_price_to_sell)
                 if price_delta_br_bf > 0:
                     print('br->bf: ', price_delta_br_bf)
                     btc_after_buy = br_usd_available / br_price_to_buy + br_btc_available
                     print('btc after buy ', btc_after_buy)
                     usd_after_sell = bf_btc_available * bf_price_to_sell + br_usd_available
                     print('usd after sell ', usd_after_sell)
+                    print('Total value after exchange: ', usd_after_sell + btc_after_buy * br_price_to_sell / 2
+                          + btc_after_buy * bf_price_to_sell / 2)
                 if price_delta_bf_br > 0:
                     print('bf->br: ', price_delta_bf_br)
                     btc_after_buy = bf_usd_available / bf_price_to_buy + bf_btc_available
                     print('btc after buy ', btc_after_buy)
                     usd_after_sell = br_btc_available * br_price_to_sell + br_usd_available
                     print('usd after sell ', usd_after_sell)
+                    print('Total value after exchange: ', usd_after_sell + btc_after_buy * br_price_to_sell / 2
+                          + btc_after_buy * bf_price_to_sell / 2)
 
                 # # Test buy all bitfinex
                 # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
