@@ -249,6 +249,8 @@ if __name__ == "__main__":
                     total_after_exchange =  usd_after_sell + btc_after_buy * br_price_to_sell / 2 \
                                             + btc_after_buy * bf_price_to_sell / 2
                     print('Total value after exchange: ', total_after_exchange)
+                    earned = total_after_exchange - total_before_exchange
+                    print('Earned: ', earned, ' (', earned / total_before_exchange * 100, ' percent)')
                 if price_delta_bf_br > 0:
                     print('bf->br: ', price_delta_bf_br)
                     btc_after_buy = bf_usd_available / bf_price_to_buy + bf_btc_available
@@ -258,6 +260,8 @@ if __name__ == "__main__":
                     total_after_exchange = usd_after_sell + btc_after_buy * br_price_to_sell / 2 \
                                            + btc_after_buy * bf_price_to_sell / 2
                     print('Total value after exchange: ', total_after_exchange)
+                    earned = total_after_exchange - total_before_exchange
+                    print('Earned: ', earned, ' (', earned / total_before_exchange * 100, ' percent)')
 
                 # # Test buy all bitfinex
                 # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
