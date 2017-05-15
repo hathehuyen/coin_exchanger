@@ -230,11 +230,20 @@ if __name__ == "__main__":
                 fee = 2
                 price_delta_br_bf = bf_price_to_sell - br_price_to_buy
                 price_delta_bf_br = br_price_to_sell - bf_price_to_buy
-                if price_delta_br_bf > fee:
-                    print('br->bf: ', price_delta_br_bf, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
-
-                if price_delta_bf_br > fee:
-                    print('bf->br: ', price_delta_bf_br, (price_delta_br_bf - fee) * 100 / bf_price_to_sell)
+                print('Total usd available: ', bf_usd_available + br_usd_available)
+                print('Total btc available: ', br_btc_available + bf_btc_available)
+                if price_delta_br_bf > 0:
+                    print('br->bf: ', price_delta_br_bf)
+                    btc_after_buy = br_usd_available / br_price_to_buy + br_btc_available
+                    print('btc after buy ', btc_after_buy)
+                    usd_after_sell = bf_btc_available * bf_price_to_sell + br_usd_available
+                    print('usd after sell ', usd_after_sell)
+                if price_delta_bf_br > 0:
+                    print('bf->br: ', price_delta_bf_br)
+                    btc_after_buy = bf_usd_available / bf_price_to_buy + bf_btc_available
+                    print('btc after buy ', btc_after_buy)
+                    usd_after_sell = br_btc_available * br_price_to_sell + br_usd_available
+                    print('usd after sell ', usd_after_sell)
 
                 # # Test buy all bitfinex
                 # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
