@@ -6,8 +6,6 @@ import btrx
 import json
 import time
 
-# p = polo.poloniex(config.POLO.APIKey, config.POLO.Secret)
-# print(p.returnTicker())
 
 bf = btfx.Client()
 bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
@@ -188,16 +186,15 @@ def bittrex_sell(btc_amount, price_to_sell):
         return False
 
 
-def run():
-    # print(br.get_balances())
-    # print(br.get_deposit_address('BTC'))
-    # print(br.get_deposit_address('USDT'))
-    pass
-    # print(bft.account_infos())
-    # print(bft.get_summary())
-    # print(bft.get_deposit_address('bitcoin'))
-    # print(bft.get_deposit_address('mastercoin'))
-    # print(json.dumps(bf.order_book('BTCUSD')))
+# print(br.get_balances())
+# print(br.get_deposit_address('BTC'))
+# print(br.get_deposit_address('USDT'))
+# print(bft.account_infos())
+# print(bft.get_summary())
+# print(bft.get_deposit_address('bitcoin'))
+# print(bft.get_deposit_address('mastercoin'))
+# print(json.dumps(bf.order_book('BTCUSD')))
+
 
 
 def get_ticker():
@@ -242,27 +239,40 @@ if __name__ == "__main__":
                 print('Total value before exchange: ', total_before_exchange)
                 if price_delta_br_bf > 0:
                     print('br->bf: ', price_delta_br_bf)
-                    btc_after_buy = br_usd_available / br_price_to_buy + br_btc_available
-                    print('btc after buy ', btc_after_buy)
-                    usd_after_sell = bf_btc_available * bf_price_to_sell + br_usd_available
-                    print('usd after sell ', usd_after_sell)
-                    total_after_exchange =  usd_after_sell + btc_after_buy * br_price_to_sell / 2 \
-                                            + btc_after_buy * bf_price_to_sell / 2
-                    print('Total value after exchange: ', total_after_exchange)
-                    earned = total_after_exchange - total_before_exchange
-                    print('Earned: ', earned, ' (', earned / total_before_exchange * 100, ' percent)')
+                    btc_after_buy = (br_usd_available - br_usd_available * config.BTRX.taker_fee) / br_price_to_buy \
+                                    + br_btc_available
+                    usd_after_sell = (bf_btc_available - bf_btc_available * config.BTFX.taker_fee) * bf_price_to_sell \
+                                     + br_usd_available
+                    usd_after_transfer = usd_after_sell - config.BTFX.withdraw_fee['USDT']
+                    btc_after_transfer = btc_after_buy - config.BTRX.withdraw_fee['BTC']
+                    print('btc after transfer ', btc_after_transfer)
+                    print('usd after transfer ', usd_after_transfer)
+                    total_after_transfer = usd_after_transfer + btc_after_transfer * br_price_to_sell / 2 \
+                                            + btc_after_transfer * bf_price_to_sell / 2
+                    print('Total value after exchange: ', total_after_transfer)
+                    earned = total_after_transfer - total_before_exchange
+                    earned_percent = earned / total_before_exchange * 100
+                    print('Earned: ', earned, ' (', earned_percent, ' percent)')
+                    if earned_percent >= config.min_rate_per_exchange:
+                        pass
                 if price_delta_bf_br > 0:
                     print('bf->br: ', price_delta_bf_br)
-                    btc_after_buy = bf_usd_available / bf_price_to_buy + bf_btc_available
-                    print('btc after buy ', btc_after_buy)
-                    usd_after_sell = br_btc_available * br_price_to_sell + br_usd_available
-                    print('usd after sell ', usd_after_sell)
-                    total_after_exchange = usd_after_sell + btc_after_buy * br_price_to_sell / 2 \
-                                           + btc_after_buy * bf_price_to_sell / 2
-                    print('Total value after exchange: ', total_after_exchange)
-                    earned = total_after_exchange - total_before_exchange
-                    print('Earned: ', earned, ' (', earned / total_before_exchange * 100, ' percent)')
-
+                    btc_after_buy = (bf_usd_available - bf_usd_available * config.BTFX.taker_fee) / bf_price_to_buy \
+                                    + bf_btc_available
+                    usd_after_sell = (br_btc_available - br_btc_available * config.BTRX.taker_fee) * br_price_to_sell \
+                                     + br_usd_available
+                    usd_after_transfer = usd_after_sell - config.BTRX.withdraw_fee['USDT']
+                    btc_after_transfer = btc_after_buy - config.BTFX.withdraw_fee['BTC']
+                    print('btc after transfer ', btc_after_transfer)
+                    print('usd after transfer ', usd_after_transfer)
+                    total_after_transfer = usd_after_transfer + btc_after_transfer * br_price_to_sell / 2 \
+                                           + btc_after_transfer * bf_price_to_sell / 2
+                    print('Total value after exchange: ', total_after_transfer)
+                    earned = total_after_transfer - total_before_exchange
+                    earned_percent = earned / total_before_exchange * 100
+                    print('Earned: ', earned, ' (', earned_percent, ' percent)')
+                    if earned_percent >= config.min_rate_per_exchange:
+                        pass
                 # # Test buy all bitfinex
                 # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
                 #     print("Buy complete")

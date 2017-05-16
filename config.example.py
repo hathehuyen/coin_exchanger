@@ -45,3 +45,5 @@ class BTRX:
         "BTC": 0.0002,
         "USDT": 0.1
     }
+
+min_rate_per_exchange = 0.05
