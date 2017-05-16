@@ -46,4 +46,7 @@ class BTRX:
         "USDT": 0.1
     }
 
+# Minimum percent earned per exchange
 min_rate_per_exchange = 0.05
+# Time to sleep
+time_to_sleep = 30
