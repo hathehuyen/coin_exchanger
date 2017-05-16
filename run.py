@@ -326,7 +326,62 @@ if __name__ == "__main__":
                     earned_percent = earned / total_before_exchange * 100
                     print('Earned: ', earned, ' (', earned_percent, ' percent)')
                     if earned_percent >= config.min_rate_per_exchange:
-                        pass
+                        if bitfinex_buy(bf_usd_available, bf_price_to_buy):
+                            if bitfinex_sell(br_btc_available, br_price_to_sell):
+                                print('Buy and sell complete, transfering coin')
+                                bft.withdraw('btc', str(btc_after_buy / 2),
+                                             config.BTRX.wallet_adress['BTC'])
+                                br.withdraw('USDT', usd_after_sell / 2, config.BTFX.wallet_adress['USDT'])
+                                print('Transfer oder placed, waiting for received')
+                                received = False
+                                while not received:
+                                    time.sleep(config.time_to_sleep)
+                                    print('Checking if coins received')
+                                    bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell \
+                                        = bitfinex_get_infos()
+                                    br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
+                                        = bittrex_get_infos()
+                                    if abs(br_usd_available - br_usd_available) < 1 and \
+                                                    abs(br_btc_available - bf_btc_available) < 0.001:
+                                        received = True
+                                        print('Coins received')
+                            else:
+                                print('Buy complete, sell failed')
+                                sell_complete = False
+                                last_buy_price = bf_price_to_buy
+                                while not sell_complete:
+                                    time.sleep(config.time_to_sleep)
+                                    bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell \
+                                        = bitfinex_get_infos()
+                                    br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
+                                        = bittrex_get_infos()
+                                    usd_after_sell = (br_btc_available - br_btc_available * config.BTRX.taker_fee) \
+                                                     * br_price_to_sell + br_usd_available
+                                    usd_after_transfer = usd_after_sell - config.BTRX.withdraw_fee['USDT']
+                                    if br_price_to_sell > last_buy_price:
+                                        if bittrex_sell(br_btc_available, br_price_to_sell):
+                                            sell_complete = True
+                                            print('Sell complete on Bittrex, transfering coin')
+                                            bft.withdraw('btc', str(btc_after_buy / 2),
+                                                         config.BTRX.wallet_adress['BTC'])
+                                            br.withdraw('USDT', usd_after_sell / 2, config.BTFX.wallet_adress['USDT'])
+                                            print('Transfer oder placed, waiting for received')
+                                            received = False
+                                            while not received:
+                                                time.sleep(config.time_to_sleep)
+                                                print('Checking if coins received')
+                                                bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell \
+                                                    = bitfinex_get_infos()
+                                                br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
+                                                    = bittrex_get_infos()
+                                                if abs(br_usd_available - br_usd_available) < 1 and \
+                                                                abs(br_btc_available - bf_btc_available) < 0.001:
+                                                    received = True
+                                                    print('Coins received')
+                                    if bf_price_to_sell > last_buy_price:
+                                        if bitfinex_sell(bf_btc_available / 2, bf_price_to_sell):
+                                            sell_complete = True
+                                            print('Resell complete on Bitfinex')
                 # # Test buy all bitfinex
                 # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
                 #     print("Buy complete")
