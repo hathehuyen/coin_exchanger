@@ -1,4 +1,4 @@
-from __future__ import print_info_function
+from __future__ import print_function
 import config
 # import polo
 import btfx
