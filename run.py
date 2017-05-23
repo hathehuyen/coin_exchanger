@@ -237,12 +237,12 @@ if __name__ == "__main__":
                 total_before_exchange = br_usd_available + bf_usd_available + \
                                         br_btc_available * br_price_to_sell + bf_btc_available * bf_price_to_sell
                 print('Total value before exchange: ', total_before_exchange)
-                if price_delta_br_bf > 0:
+                if price_delta_br_bf > 10:
                     print('br->bf: ', price_delta_br_bf)
                     btc_after_buy = (br_usd_available - br_usd_available * config.BTRX.taker_fee) / br_price_to_buy \
                                     + br_btc_available
                     usd_after_sell = (bf_btc_available - bf_btc_available * config.BTFX.taker_fee) * bf_price_to_sell \
-                                     + br_usd_available
+                                     + bf_usd_available
                     usd_after_transfer = usd_after_sell - config.BTFX.withdraw_fee['USDT']
                     btc_after_transfer = btc_after_buy - config.BTRX.withdraw_fee['BTC']
                     print('btc after transfer ', btc_after_transfer)
@@ -309,7 +309,7 @@ if __name__ == "__main__":
                                         if bittrex_sell(br_btc_available / 2, br_price_to_sell):
                                             sell_complete = True
                                             print('Resell complete on Bittrex')
-                if price_delta_bf_br > 0:
+                if price_delta_bf_br > 10:
                     print('bf->br: ', price_delta_bf_br)
                     btc_after_buy = (bf_usd_available - bf_usd_available * config.BTFX.taker_fee) / bf_price_to_buy \
                                     + bf_btc_available
