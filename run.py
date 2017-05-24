@@ -7,7 +7,6 @@ import json
 import time
 from datetime import datetime
 
-
 bf = btfx.Client()
 bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
 br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
@@ -103,6 +102,20 @@ def bittrex_get_infos():
     order_book = br.get_orderbook('USDT-BTC', 'both')
     return usd_available, btc_available, \
            price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
+
+
+def bittrex_get_currency_info(currency_name):
+    try:
+        res = br.get_currencies()
+        if res.get('success'):
+            currencies = res['result']
+            for currency in currencies:
+                if currency['Currency'] == currency_name:
+                    return currency
+        return False
+    except Exception as ex:
+        print_info(ex)
+        return False
 
 
 def bitfinex_buy(usd_amount, price_to_buy):
@@ -223,6 +236,14 @@ if __name__ == "__main__":
         while True:
             try:
                 print_info('=== running ===')
+                print_info('=== Check Bittrex Coins active ===')
+                btr_usdt_info = bittrex_get_currency_info('USDT')
+                btr_btc_info = bittrex_get_currency_info('BTC')
+                if btr_usdt_info['IsActive'] and btr_btc_info['IsActive']:
+                    print_info('=== Bittrex Coins are actived ===')
+                else:
+                    continue
+                print_info('=== Check Bitfinex Coins Active ===')
                 # Get Bitfinex info
                 bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell = bitfinex_get_infos()
                 print_info('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
@@ -249,16 +270,16 @@ if __name__ == "__main__":
                     print_info('btc after transfer ', btc_after_transfer)
                     print_info('usd after transfer ', usd_after_transfer)
                     total_after_transfer = usd_after_transfer + btc_after_transfer * br_price_to_sell / 2 \
-                                            + btc_after_transfer * bf_price_to_sell / 2
+                                           + btc_after_transfer * bf_price_to_sell / 2
                     print_info('Total value after exchange: ', total_after_transfer)
                     earned = total_after_transfer - total_before_exchange
                     earned_percent = earned / total_before_exchange * 100
                     print_info('Earned: ', earned, ' (', earned_percent, ' percent)')
                     # if earned_percent >= config.min_rate_per_exchange:
-                    #     if bittrex_buy(br_usd_available, br_price_to_buy):
+                    #     if bittrex_buy(br_usd_available * (1 - config.BTRX.taker_fee), br_price_to_buy):
                     #         if bitfinex_sell(bf_btc_available, bf_price_to_sell):
                     #             print_info('Buy and sell complete, transfering coin')
-                    #             bft.withdraw('mastercoin', str(usd_after_sell / 2),config.BTRX.wallet_adress['USDT'])
+                    #             bft.withdraw('mastercoin', str(usd_after_sell / 2), config.BTRX.wallet_adress['USDT'])
                     #             br.withdraw('BTC', btc_after_buy / 2, config.BTFX.wallet_adress['BTC'])
                     #             print_info('Transfer oder placed, waiting for received')
                     #             received = False
@@ -383,18 +404,18 @@ if __name__ == "__main__":
                     #                     if bitfinex_sell(bf_btc_available / 2, bf_price_to_sell):
                     #                         sell_complete = True
                     #                         print_info('Resell complete on Bitfinex')
-                # # Test buy all bitfinex
-                # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
-                #     print_info("Buy complete")
-                # else:
-                #     print_info("Buy failed")
-                # # Test sell all bitfinex
-                # if bitfinex_sell(bf_btc_available, bf_price_to_sell):
-                #     print_info("Sell complete")
-                # else:
-                #     print_info("Sell failed")
-                # print_info(json.dumps(bft.withdraw('mastercoin', str(bf_usd_available), '16jyBXTmP2t21deSZJDT65vLJLsANqbYtL')))
-                # print_info(json.dumps(bft.get_deposit_withdraw_history('mastercoin')))
+                    # # Test buy all bitfinex
+                    # if bitfinex_buy(bf_usd_available, bf_price_to_buy):
+                    #     print_info("Buy complete")
+                    # else:
+                    #     print_info("Buy failed")
+                    # # Test sell all bitfinex
+                    # if bitfinex_sell(bf_btc_available, bf_price_to_sell):
+                    #     print_info("Sell complete")
+                    # else:
+                    #     print_info("Sell failed")
+                    # print_info(json.dumps(bft.withdraw('mastercoin', str(bf_usd_available), '16jyBXTmP2t21deSZJDT65vLJLsANqbYtL')))
+                    # print_info(json.dumps(bft.get_deposit_withdraw_history('mastercoin')))
             except Exception as ex:
                 print_info(ex.message)
             time.sleep(config.time_to_sleep)
