@@ -269,7 +269,7 @@ if __name__ == "__main__":
                     #                     = bitfinex_get_infos()
                     #                 br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
                     #                     = bittrex_get_infos()
-                    #                 if abs(br_usd_available - br_usd_available) < 1 and \
+                    #                 if abs(br_usd_available - bf_usd_available) < 1 and \
                     #                                 abs(br_btc_available - bf_btc_available) < 0.001:
                     #                     received = True
                     #                     print_info('Coins received')
@@ -302,7 +302,7 @@ if __name__ == "__main__":
                     #                                 = bitfinex_get_infos()
                     #                             br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
                     #                                 = bittrex_get_infos()
-                    #                             if abs(br_usd_available - br_usd_available) < 1 and \
+                    #                             if abs(br_usd_available - bf_usd_available) < 1 and \
                     #                                             abs(br_btc_available - bf_btc_available) < 0.001:
                     #                                 received = True
                     #                                 print_info('Coins received')
@@ -342,7 +342,7 @@ if __name__ == "__main__":
                     #                     = bitfinex_get_infos()
                     #                 br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
                     #                     = bittrex_get_infos()
-                    #                 if abs(br_usd_available - br_usd_available) < 1 and \
+                    #                 if abs(br_usd_available - bf_usd_available) < 1 and \
                     #                                 abs(br_btc_available - bf_btc_available) < 0.001:
                     #                     received = True
                     #                     print_info('Coins received')
@@ -375,7 +375,7 @@ if __name__ == "__main__":
                     #                                 = bitfinex_get_infos()
                     #                             br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell \
                     #                                 = bittrex_get_infos()
-                    #                             if abs(br_usd_available - br_usd_available) < 1 and \
+                    #                             if abs(br_usd_available - bf_usd_available) < 1 and \
                     #                                             abs(br_btc_available - bf_btc_available) < 0.001:
                     #                                 received = True
                     #                                 print_info('Coins received')
