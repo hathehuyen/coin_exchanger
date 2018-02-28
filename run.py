@@ -9,7 +9,7 @@ import logging
 from datetime import datetime
 
 
-logging.basicConfig(filename='price-diff.log',level=logging.INFO)
+logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s', filename='price-diff.log',level=logging.INFO)
 
 bf = btfx.Client()
 bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
