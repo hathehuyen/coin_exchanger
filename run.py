@@ -9,7 +9,7 @@ import logging
 from datetime import datetime
 
 
-logging.basicConfig(filename='price-diff.log',level=logging.DEBUG)
+logging.basicConfig(filename='price-diff.log',level=logging.INFO)
 
 bf = btfx.Client()
 bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
@@ -232,7 +232,7 @@ def transfer():
 
 def print_info(*args):
     print(datetime.utcnow(), args)
-    logging.info(datetime.utcnow(), args)
+    logging.info(args)
 
 
 if __name__ == "__main__":
