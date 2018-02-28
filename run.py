@@ -254,7 +254,10 @@ if __name__ == "__main__":
                 # Compare to make decision
                 price_diff_br_bf = (br_price_to_buy - bf_price_to_sell) / bf_price_to_sell
                 price_diff_br_br = (bf_price_to_buy - br_price_to_sell) / br_price_to_sell
-                print_info("Diff:", price_diff_br_bf, price_diff_br_br)
+                if price_diff_br_bf > 0.01 or price_diff_br_br > 0.01:
+                    print_info('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
+                    print_info('Bittrex: ', br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
+                    print_info("Diff:", price_diff_br_bf, price_diff_br_br)
                 # price_delta_br_bf = bf_price_to_sell - br_price_to_buy
                 # price_delta_bf_br = br_price_to_sell - bf_price_to_buy
                 # print_info('Total usd available: ', bf_usd_available + br_usd_available)
