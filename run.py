@@ -246,10 +246,10 @@ if __name__ == "__main__":
                 # print_info('=== Check Bitfinex Coins Active ===')
                 # # Get Bitfinex info
                 bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell = bitfinex_get_infos()
-                print_info('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
+                #print_info('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
                 # Get Bittrex info
                 br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell = bittrex_get_infos()
-                print_info('Bittrex: ', br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
+                #print_info('Bittrex: ', br_usd_available, br_btc_available, br_price_to_buy, br_price_to_sell)
 
                 # Compare to make decision
                 price_diff_br_bf = (br_price_to_buy - bf_price_to_sell) / bf_price_to_sell
