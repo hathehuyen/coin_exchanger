@@ -5,12 +5,17 @@ import btfx
 import btrx
 import json
 import time
+import logging
 from datetime import datetime
+
+
+logging.basicConfig(filename='price-diff.log',level=logging.DEBUG)
 
 bf = btfx.Client()
 bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
 br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
 #print(json.dumps(bft.get_deposit_withdraw_history('btc')))
+
 
 def bitfinex_get_infos():
     def get_balance():
@@ -227,6 +232,7 @@ def transfer():
 
 def print_info(*args):
     print(datetime.utcnow(), args)
+    logging.info(datetime.utcnow(), args)
 
 
 if __name__ == "__main__":
