@@ -10,7 +10,7 @@ from datetime import datetime
 bf = btfx.Client()
 bft = btfx.TradeClient(config.BTFX.Key, config.BTFX.Secret)
 br = btrx.Bittrex(config.BTRX.Key, config.BTRX.Secret)
-
+print(json.dumps(bft.get_deposit_withdraw_history('btc')))
 
 def bitfinex_get_infos():
     def get_balance():
@@ -236,15 +236,15 @@ if __name__ == "__main__":
         while True:
             try:
                 print_info('=== running ===')
-                print_info('=== Check Bittrex Coins active ===')
-                btr_usdt_info = bittrex_get_currency_info('USDT')
-                btr_btc_info = bittrex_get_currency_info('BTC')
-                if btr_usdt_info['IsActive'] and btr_btc_info['IsActive']:
-                    print_info('=== Bittrex Coins are actived ===')
-                else:
-                    continue
-                print_info('=== Check Bitfinex Coins Active ===')
-                # Get Bitfinex info
+                # print_info('=== Check Bittrex Coins active ===')
+                # btr_usdt_info = bittrex_get_currency_info('USDT')
+                # btr_btc_info = bittrex_get_currency_info('BTC')
+                # if btr_usdt_info['IsActive'] and btr_btc_info['IsActive']:
+                #     print_info('=== Bittrex Coins are actived ===')
+                # else:
+                #     continue
+                # print_info('=== Check Bitfinex Coins Active ===')
+                # # Get Bitfinex info
                 bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell = bitfinex_get_infos()
                 print_info('Bitfinex: ', bf_usd_available, bf_btc_available, bf_price_to_buy, bf_price_to_sell)
                 # Get Bittrex info
