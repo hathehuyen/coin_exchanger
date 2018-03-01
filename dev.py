@@ -29,27 +29,22 @@ def polo_get_infos():
         return float(usd_available), float(btc_available)
 
     def price_to_buy(order_book, amount):
-        if 'success' in order_book:
-            if order_book['success']:
-                asks = order_book['result']['sell']
-                # print_info(asks)
-                for ask in asks:
-                    if amount <= ask['Quantity'] * ask['Rate']:
-                        return ask['Rate']
-                    else:
-                        amount -= float(ask['Quantity'] * ask['Rate'])
+        asks = order_book['asks']
+        # print_info(asks)
+        for ask in asks:
+            if amount <= ask[1] * float(ask[0]):
+                return float(ask[0])
+            else:
+                amount -= float(ask[1] * float(ask[0]))
         return False
 
     def price_to_sell(order_book, amount):
-        if 'success' in order_book:
-            if order_book['success']:
-                bids = order_book['result']['buy']
-                # print_info(asks)
-                for bid in bids:
-                    if amount <= bid['Quantity']:
-                        return bid['Rate']
-                    else:
-                        amount -= float(bid['Quantity'])
+        bids = order_book['bids']
+        for bid in bids:
+            if amount <= bid[1]:
+                return float(bid[0])
+            else:
+                amount -= float(bid[1])
         return False
     usd_available, btc_available = get_balance()
     order_book = pl.returnOrderBook('USDT_BTC')
@@ -57,6 +52,9 @@ def polo_get_infos():
     print(order_book['bids'][0])
     print ("Order book")
     print (order_book)
+
+    print(usd_available, btc_available,
+                price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available))
     # return usd_available, btc_available, \
     #        price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
 
