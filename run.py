@@ -115,8 +115,6 @@ def polo_get_infos():
         btc_available = 0
         usd_available = 0
         balances = pl.returnBalances()
-
-        print(balances)
         usd_available = balances['USDT']
         btc_available = balances['BTC']
         # print (usd_available, " ", btc_available)
