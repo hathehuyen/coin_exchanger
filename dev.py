@@ -68,3 +68,4 @@ def polo_get_infos():
 
 if __name__ == '__main__':
     print ("RUN")
+    polo_get_infos()
