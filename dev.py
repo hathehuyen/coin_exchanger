@@ -53,7 +53,7 @@ def polo_get_infos():
         return False
     usd_available, btc_available = get_balance()
     order_book = pl.returnOrderBook('USDT_BTC')
-    print(order_book['bids'][0])
+    print(order_book['bids'][0][0])
     print(order_book['bids'][0])
     print ("Order book")
     print (order_book)
