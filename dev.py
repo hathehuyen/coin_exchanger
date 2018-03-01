@@ -55,8 +55,8 @@ def polo_get_infos():
 
     print(usd_available, btc_available,
                 price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available))
-    # return usd_available, btc_available, \
-    #        price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
+    return usd_available, btc_available, \
+           price_to_buy(order_book, usd_available), price_to_sell(order_book, btc_available)
 
 if __name__ == '__main__':
     print ("RUN")
