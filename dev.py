@@ -23,16 +23,19 @@ def polo_get_infos():
         balances = pl.returnBalances()
 
         print(balances)
-        if 'success' in balances:
-            if balances['success']:
-                for balance in balances['result']:
-                    if balance['Currency'] == 'BTC':
-                        btc_available = balance['Available']
-                    if balance['Currency'] == 'USDT':
-                        usd_available = balance['Available']
-                # print_info('BTC: ', btc_available)
-                # print_info('USD: ', usd_available)
-                return float(usd_available), float(btc_available)
+        usd_available = balances['USDT']
+        btc_available = balances['BTC']
+        print (usd_available, " ", btc_available)
+        # if 'success' in balances:
+        #     if balances['success']:
+        #         for balance in balances['result']:
+        #             if balance['Currency'] == 'BTC':
+        #                 btc_available = balance['Available']
+        #             if balance['Currency'] == 'USDT':
+        #                 usd_available = balance['Available']
+        #         # print_info('BTC: ', btc_available)
+        #         # print_info('USD: ', usd_available)
+        # return float(usd_available), float(btc_available)
 
     def price_to_buy(order_book, amount):
         if 'success' in order_book:
